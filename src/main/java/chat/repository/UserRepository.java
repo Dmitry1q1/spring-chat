@@ -13,10 +13,10 @@ import java.util.List;
 
 @Repository
 public interface UserRepository extends CrudRepository<User, Integer> {
-    @Query(value = "SELECT * FROM users", nativeQuery = true)
+    @Query(value = "SELECT u.id, u.name, u.surname, u.age, u.password FROM users as u", nativeQuery = true)
     List<User> getAllUsers();
 
-    @Query(value = "SELECT * FROM users as u WHERE u.id = :id", nativeQuery = true)
+    @Query(value = "SELECT u.id, u.name, u.surname, u.age, u.password FROM users as u WHERE u.id = :id", nativeQuery = true)
     User getUser(@Param("id") int id);
 
     @Modifying
