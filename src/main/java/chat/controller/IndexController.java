@@ -22,7 +22,7 @@ public class IndexController {
     }
 
     @GetMapping("/")
-    public ResponseEntity index() {
+    public ResponseEntity<?> index() {
         Map<Object, Object> model = new HashMap<>();
         model.put("success", true);
         List<User> users = userRepository.getAllUsers();
