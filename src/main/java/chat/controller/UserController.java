@@ -4,10 +4,7 @@ import chat.model.User;
 import chat.repository.UserRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,7 +28,29 @@ public class UserController {
         return user != null ? new ResponseEntity<>(userRepository.getUser(id), HttpStatus.OK) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    
+    @PostMapping("/")
+    public ResponseEntity<?> create(@RequestBody User user) {
+        userRepository.insertUser(user.getName(), user.getSurname(), user.getAge(), user.getPassword());
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> update(@PathVariable(name = "id") int id, @RequestBody User user) {
+        if (userRepository.getUser(id) != null) {
+            userRepository.updateUser(user.getName(), user.getSurname(), user.getAge(), user.getPassword(), id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable(name = "id") int id) {
+        if (userRepository.getUser(id) != null) {
+            userRepository.deleteUser(id);
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_MODIFIED);
+        }
+    }
 }
